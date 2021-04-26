@@ -6,14 +6,9 @@ import sys
 def add_possibilities(list_of_possibilities):
     new_list = []
     for possibility in list_of_possibilities:
-        possibility.append("rock")
-        new_list.append(possibility)
-        possibility.pop()
-        possibility.append("paper")
-        new_list.append(possibility)
-        possibility.pop()
-        possibility.append("scissors")
-        new_list.append(possibility)
+        new_list.append(possibility + ["rock"])
+        new_list.append(possibility + ["paper"])
+        new_list.append(possibility + ["scissors"])
     return new_list
 
 
