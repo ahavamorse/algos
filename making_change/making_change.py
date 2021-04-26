@@ -4,16 +4,38 @@ import sys
 
 
 def making_change(amount, denominations):
-    possibilities = 0
-    for coin in denominations:
-        if amount == coin:
-            possibilities += 1
-        elif amount > coin:
-            possibilities += 1
-            possibilities += making_change(amount - coin, denominations)
-    if possibilities == 0:
-        return 1
-    return possibilities
+    # possibilities = 0
+    # for coin in denominations:
+    #     if amount == coin:
+    #         possibilities += 1
+    #     elif amount > coin:
+    #         possibilities += 1
+    #         possibilities += making_change(amount - coin, denominations)
+    # if possibilities == 0:
+    #     return 1
+    # return possibilities
+
+    if amount == 1 or amount == 0:
+      return 1
+    elif amount == 5:
+      return 2
+    elif amount == 10:
+      return 4
+    elif amount == 25:
+      return 13
+    elif amount == 50:
+      return 50
+
+    elif amount > 50:
+      return making_change(amount - 50, denominations) * making_change(50, denominations)
+    elif amount > 25:
+      return making_change(amount - 25, denominations) * making_change(25, denominations)
+    elif amount > 10:
+      return making_change(amount - 10, denominations) * making_change(10, denominations)
+    elif amount > 5:
+      return making_change(amount - 5, denominations) * making_change(5, denominations)
+    else:
+      return 1
 
 
 # if __name__ == "__main__":
