@@ -4,18 +4,28 @@ import sys
 
 
 def making_change(amount, denominations):
+    print(f"*** Calling making_change with amount: {amount} and denominations: {denominations}***")
     if len(denominations) < 2:
+        print(f"only pennies so only 1 way to make {amount}")
         return 1
-    elif amount < 2:
+    elif amount < 5:
+        print(f"{amount} is so small it can only be made with pennies")
         return 1
     current_coin_value = denominations[len(denominations) - 1]
     max_num_of_coins = amount // current_coin_value
+    # print(f"the max number of {current_coin_value}'s that can fit in {amount} is {max_num_of_coins}")
     combinations = max_num_of_coins
-    denominations.pop()
-    if amount == current_coin_value:
-        return 1 + making_change(amount, denominations)
-    for i in range(0, max_num_of_coins):
-        combinations += making_change(amount - (current_coin_value * i), denominations)
+    new_denominations = [denominations[i] for i in range(0, len(denominations) - 1)]
+    if max_num_of_coins == 0:
+        print(f"no {current_coin_value}s can fit in {amount}")
+        return making_change(amount, new_denominations)
+    elif max_num_of_coins == 1:
+        print(f"it takes exactly 1 {current_coin_value} to make {amount}")
+        return 1 + making_change(amount, new_denominations)
+    for i in range(0, max_num_of_coins - 1):
+        subcombinations = making_change(amount - (current_coin_value * i), new_denominations)
+        combinations += subcombinations
+        print(f"amount ({amount}) - {i} * {current_coin_value} can be made with {new_denominations} {subcombinations} ways. ")
     if combinations == 0:
         return 1
     return combinations
