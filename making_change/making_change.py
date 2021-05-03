@@ -2,27 +2,54 @@
 
 import sys
 
+from itertools import permutations
+
 
 def making_change(amount, denominations):
-    if amount < 5 or len(denominations) < 2:
+    # brute force attempt
+    if amount < 5:
         return 1
-    combinations = 1
-    lower_coins = [1]
-    for i in range(1, len(denominations) - 1):
-        # print(i)
-        coin = denominations[i]
+    num_of_possible_combinations = 0
+    for coin in denominations:
+        if coin == amount:
+            num_of_possible_combinations += 1
 
-        num_of_coins_in_amount = amount // coin
-        combinations += num_of_coins_in_amount
-        for j in range(1, num_of_coins_in_amount):
-            new_amount = amount - (coin * j)
-            if new_amount > 0:
-                combinations += making_change(new_amount, lower_coins)
-        lower_coins.append(coin)
+    all_possibilities = []
+    new_denominations = []
+    for i in range(1, amount + 1):
+        for coin in denominations:
+            new_denominations.append(coin)
+    for i in range(2, amount + 1):
+        all_possibilities += list(permutations(new_denominations, i))
 
-    print("************************", combinations)
+    for possibility in all_possibilities:
+        # print(possibility)
+        sum = 0
+        for num in possibility:
+            sum += num
+        if sum == amount:
+            print(f'{possibility} makes {amount}')
+            num_of_possible_combinations += 1
 
-    return combinations
+    return num_of_possible_combinations
+
+    # if amount < 5 or len(denominations) < 2:
+    #     return 1
+    # combinations = 1
+    # lower_coins = [1]
+    # for i in range(1, len(denominations) - 1):
+    #     # print(i)
+    #     coin = denominations[i]
+    #
+    #     num_of_coins_in_amount = amount // coin
+    #     combinations += num_of_coins_in_amount
+    #     for j in range(1, num_of_coins_in_amount):
+    #         new_amount = amount - (coin * j)
+    #         if new_amount > 0:
+    #             combinations += making_change(new_amount, lower_coins)
+    #     lower_coins.append(coin)
+    #
+    # return combinations
 
     # if amount < 5:
     #     return 1
@@ -62,18 +89,18 @@ import unittest
 class Test(unittest.TestCase):
 
     def setUp(self):
-        self.denominations = [1, 5, 10, 25, 50]
+        self.denominations = [1, 5, 10]#, 25, 50]
 
     def test_making_change_small_amount(self):
         self.assertEqual(making_change(0, self.denominations), 1)
         self.assertEqual(making_change(1, self.denominations), 1)
         self.assertEqual(making_change(5, self.denominations), 2)
-        # self.assertEqual(making_change(10, self.denominations), 4)
+        self.assertEqual(making_change(10, self.denominations), 4)
         self.assertEqual(making_change(20, self.denominations), 9)
-        # self.assertEqual(making_change(30, self.denominations), 18)
-        # self.assertEqual(making_change(100, self.denominations), 292)
-        # self.assertEqual(making_change(200, self.denominations), 2435)
-        # self.assertEqual(making_change(300, self.denominations), 9590)
+        self.assertEqual(making_change(30, self.denominations), 18)
+        self.assertEqual(making_change(100, self.denominations), 292)
+        self.assertEqual(making_change(200, self.denominations), 2435)
+        self.assertEqual(making_change(300, self.denominations), 9590)
 
     def test_making_change_large_amount(self):
         return True
